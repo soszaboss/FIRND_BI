@@ -1,0 +1,5 @@
+.venv/
+diplomas_downloaded/
+media/diplomas/
+watermark.pdf
+.env
