@@ -56,8 +56,7 @@ const MyChatBot = () => {
       },
     },
     prompt_again: {
-      message: "Avez-vous besoin d’une autre aide ?",
-      transition: { duration: 500 },
+      transition: { duration: 7000 },
       path: "show_options",
     },
     unknown_input: {
@@ -77,10 +76,17 @@ const MyChatBot = () => {
       storageKey: "example_theming",
     },
   };
-
+  const config = {
+    header:{
+      title: "FIRND BI"
+    },
+    chatWindow:{
+      showScrollbar:true
+    }
+  }
   return (
     <div>
-      <ChatBot flow={flow} options={options} />
+      <ChatBot flow={flow} options={options} settings={config}/>
     </div>
   );
 };
