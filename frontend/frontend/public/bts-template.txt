@@ -1,0 +1,97 @@
+<figure class="image image_resized image-style-align-right" style="width:13%;" data-ckbox-resource-id="Wu95wmI1jtpx">
+    <picture><source srcset="https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/Wu95wmI1jtpx/images/80.webp 80w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/Wu95wmI1jtpx/images/160.webp 160w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/Wu95wmI1jtpx/images/240.webp 240w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/Wu95wmI1jtpx/images/243.webp 243w" type="image/webp" sizes="(max-width: 243px) 100vw, 243px"><img src="https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/Wu95wmI1jtpx/images/243.png" width="243" height="277"></picture>
+</figure>
+<figure class="image image_resized image-style-align-left" style="width:13%;" data-ckbox-resource-id="b_iG7cZUrvYA">
+    <picture><source srcset="https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/b_iG7cZUrvYA/images/80.webp 80w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/b_iG7cZUrvYA/images/160.webp 160w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/b_iG7cZUrvYA/images/240.webp 240w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/b_iG7cZUrvYA/images/262.webp 262w" type="image/webp" sizes="(max-width: 262px) 100vw, 262px"><img src="https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/b_iG7cZUrvYA/images/262.png" width="262" height="290"></picture>
+</figure>
+<div style="border:2px solid #000;font-family:Arial, sans-serif;margin:0 auto;max-width:800px;padding:20px;text-align:center;">
+    <p>
+        &nbsp;
+    </p>
+    <h1 style="color:#003366;text-transform:uppercase;" id="e43a6a78ba84677086506ff661a7c615c">
+        Brevet de Technicien Supérieur
+    </h1>
+    <p style="font-size:18px;">
+        Ce diplôme est décerné à
+    </p>
+    <h2 style="color:#003366;font-size:24px;margin:20px 0;" id="edb52198c7ceffd7127fd6738b2eead9c">
+        {{Nom_etudiant}}
+    </h2>
+    <p style="font-size:18px;">
+        pour avoir satisfait aux exigences du programme
+    </p>
+    <h3 style="color:#003366;font-size:22px;margin:20px 0;" id="eaf46d7141693c510c1c049a528bf2f41">
+        {{specialite}}
+    </h3>
+    <p style="font-size:18px;">
+        et avoir démontré les compétences requises pour l'obtention de ce diplôme.
+    </p>
+    <div style="margin-top:40px;">
+        <p style="display:inline-block;margin:0 20px;">
+            <strong>Date de délivrance :</strong> {{Date}}
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            <strong>&nbsp; &nbsp;Signature :</strong> __{{Signature}}_____________
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+        <p style="display:inline-block;margin:0 20px;">
+            &nbsp;
+        </p>
+    </div>
+    <figure class="image image_resized image-style-align-left" style="width:15%;" data-ckbox-resource-id="6v7mzAvcJR-2">
+        <picture><source srcset="https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/6v7mzAvcJR-2/images/80.webp 80w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/6v7mzAvcJR-2/images/160.webp 160w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/6v7mzAvcJR-2/images/240.webp 240w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/6v7mzAvcJR-2/images/290.webp 290w" type="image/webp" sizes="(max-width: 290px) 100vw, 290px"><img src="https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/6v7mzAvcJR-2/images/290.png" width="290" height="262"></picture>
+    </figure>
+    <figure class="image image_resized image-style-align-right" style="width:11.12%;" data-ckbox-resource-id="XVx9c9L3vs28">
+        <picture><source srcset="https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/XVx9c9L3vs28/images/80.webp 80w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/XVx9c9L3vs28/images/160.webp 160w,https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/XVx9c9L3vs28/images/231.webp 231w" type="image/webp" sizes="(max-width: 231px) 100vw, 231px"><img src="https://ckbox.cloud/FZQKcj92QAERbq8DWpqZ/assets/XVx9c9L3vs28/images/231.png" width="231" height="263"></picture>
+    </figure>
+    <p style="color:#666;margin-top:20px;">
+        &nbsp;
+    </p>
+    <p>
+        &nbsp;
+    </p>
+</div>
+<div class="page-break" style="page-break-after:always;">
+    <span style="display:none;">&nbsp;</span>
+</div>

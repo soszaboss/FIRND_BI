@@ -1,0 +1,24 @@
+{
+  "dataSets": [
+    {
+      "id": "bp1",
+      "label": "Mme Camara",
+      "values": {
+        "Nom_etudiant": "Mme Camara",
+        "specialite": "Informatique",
+        "Date": "2024-07-10",
+        "Signature": "Mme Camara"
+      }
+    },
+    {
+      "id": "bp2",
+      "label": "Pape Waly Diouf",
+      "values": {
+        "Nom_etudiant": "Pape Waly Diouf",
+        "specialite": "Boulangerie",
+        "Date": "2024-07-10",
+        "Signature": "Pape Waly"
+      }
+    }
+  ]
+}

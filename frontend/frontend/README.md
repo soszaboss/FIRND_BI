@@ -1,8 +1,27 @@
-# React + Vite
+# CKEditor 5 Sample Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup instructions
 
-Currently, two official plugins are available:
+### 1. Install dependencies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+To get started, install the necessary npm packages:
+
+```sh
+npm install
+```
+
+### 2. Start the project
+
+Run the following command to start the project:
+
+```sh
+npm run start
+```
+
+### 3. Premium features
+
+If you are using premium features, ensure you fill in the required license keys and URLs. You can sign up for [a free trial](https://orders.ckeditor.com/trial/premium-features) to use all premium features of CKEditor 5.
+
+---
+
+For more information, please refer to the official [CKEditor 5 documentation](https://ckeditor.com/docs/ckeditor5/latest/getting-started/index.html).

@@ -1,0 +1,24 @@
+{
+  "dataSets": [
+    {
+      "id": "bts1",
+      "label": "Seydi Mansour Faye",
+      "values": {
+        "Nom_etudiant": "Seydi Mansour Faye",
+        "specialite": " Systèmes d'information et numérique",
+        "Date": "2024-07-15",
+        "Signature": "S. Mansour Faye"
+      }
+    },
+    {
+      "id": "bts2",
+      "label": "Moussa Diallo",
+      "values": {
+        "Nom_etudiant": "Moussa Diallo",
+        "specialite": "Communication et gestion des PME-PMI",
+        "Date": "2024-07-15",
+        "Signature": "M. Diallo"
+      }
+    }
+  ]
+}

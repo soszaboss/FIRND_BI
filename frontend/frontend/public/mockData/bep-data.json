@@ -1,0 +1,24 @@
+{
+  "dataSets": [
+    {
+      "id": "bep1",
+      "label": "Babacar Thiam",
+      "values": {
+        "Nom_etudiant": "Babacar Thiam",
+        "specialite": "Froid et Climatisation",
+        "Date": "2024-06-14",
+        "Signature": "B. Thiam"
+      }
+    },
+    {
+      "id": "bep2",
+      "label": "Mr Dia",
+      "values": {
+        "Nom_etudiant": "Mr Dia",
+        "specialite": "Electricité",
+        "Date": "2024-06-18",
+        "Signature": "Mr Dia"
+      }
+    }
+  ]
+}

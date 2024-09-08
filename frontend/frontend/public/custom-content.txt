@@ -1,0 +1,7 @@
+<h2>Welcome to Your Custom Editor!</h2>
+<p>This content is loaded from an external text file containing HTML. Feel free to edit and explore the various features available in this powerful text editor.</p>
+<ul>
+  <li>Customize your content</li>
+  <li>Experiment with different styles</li>
+  <li>Add images and tables</li>
+</ul>

@@ -2,7 +2,7 @@ from rest_framework import status, viewsets
 from  rest_framework.decorators import api_view
 from .models import Diploma
 from .serializers import FileSerializer
-from .utils.functions import download_pdf_file
+from .utils.download_and_watermark_document import download_pdf_file
 from rest_framework.response import Response
 from django.http import FileResponse
 import os

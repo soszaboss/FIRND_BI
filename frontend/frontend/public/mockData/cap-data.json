@@ -1,0 +1,24 @@
+{
+  "dataSets": [
+    {
+      "id": "cap1",
+      "label": "Mme Ndiaye  ",
+      "values": {
+        "Nom_etudiant": "Mme Ndiaye",
+        "specialite": "Boulangerie et pâtisserie",
+        "Date": "2024-06-20",
+        "Signature": "Mme Ndiaye"
+      }
+    },
+    {
+      "id": "cap2",
+      "label": "Malick Ndiaye   ",
+      "values": {
+        "Nom_etudiant": "Malick Ndiaye",
+        "specialite": "Menuiserie",
+        "Date": "2024-06-20",
+        "Signature": "M. Ndiaye"
+      }
+    }
+  ]
+}

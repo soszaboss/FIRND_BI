@@ -1,0 +1,24 @@
+{
+  "dataSets": [
+    {
+      "id": "bt1",
+      "label": "Babacar Dieng   ",
+      "values": {
+        "Nom_etudiant": "Babacar Dieng",
+        "specialite": "Mécanique Automobile",
+        "Date": "2024-06-30",
+        "Signature": "B. Dieng"
+      }
+    },
+    {
+      "id": "bt2",
+      "label": "Modou Diop",
+      "values": {
+        "Nom_etudiant": "Modou Diop",
+        "specialite": "Mécanique Automobile",
+        "Date": "2024-06-30",
+        "Signature": "M. Diop"
+      }
+    }
+  ]
+}
