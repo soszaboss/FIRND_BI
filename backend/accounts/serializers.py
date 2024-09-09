@@ -2,16 +2,29 @@ from rest_framework import serializers
 from .models import Account
 
 
-class CreateUserSerializer(serializers.ModelSerializer):
 
+class CreateUserSerializer(serializers.ModelSerializer):
+    """
+        Création d'un serializer pour la de création de comptes utilisateurs
+        avec une gestion de differentes roles ( admin, institution, diplomé )
+    """
     class Meta:
         model = Account
-        exclude = ['is_staff', 'is_superuser']
+
+        # exclusion des champs ci-dessous lors de l'affichage et saisie des données
+        exclude = ["groups", 'is_staff', 'is_superuser', "user_permissions"]
+
         extra_kwargs = {
-            'password': {'write_only': True},
-            'role':{'write_only': True},
+            'password': {'write_only': True, 'required': True},
+            'username': {'required': True},
+            'email': {'required': True},
+            'role':{'read_only': True},
+            'last_login':{'read_only': True},
+            'is_active':{'read_only': True},
         }
 
+
+# chacun des 3 classes ci-dessous se charge de la création de compte utilisateur pour chaque different role
 
 class DiplomeUserSerializer(CreateUserSerializer):
 

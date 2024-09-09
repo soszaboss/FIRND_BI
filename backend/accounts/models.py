@@ -14,7 +14,7 @@ class UserManager(BaseUserManager):
             raise ValueError("L'utilisateur doit avoir un rôle.")
 
         email = self.normalize_email(email)
-        user = self.model(email=email, username=username, role=role)
+        user = self.model(email=email, username=username, role=role, is_active=False)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -44,6 +44,8 @@ class Account(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     groups = models.ManyToManyField(Group, related_name='account_set', blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name='account_user_permissions_set')
+
+
 
     objects = UserManager()
 
