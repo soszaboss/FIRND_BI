@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from accounts.models import Account
 from django_extensions.db.models import TimeStampedModel
 import os
 import uuid
@@ -26,7 +26,7 @@ class Model(models.Model):
 
 
 class Diploma(TimeStampedModel, Model):
-    user = models.ForeignKey(User, related_name='diplomas', on_delete=models.CASCADE)
+    user = models.ForeignKey(Account, related_name='diplomas', on_delete=models.CASCADE)
     diploma = models.FileField(upload_to=diploma_upload_path)
 
     class Meta:

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
+from django_extensions.db.models import TimeStampedModel
+
 
 class UserManager(BaseUserManager):
     """Gestionnaire personnalisé pour le modèle User."""
@@ -25,7 +27,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class Account(AbstractBaseUser, PermissionsMixin):
+class Account(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     """Modèle personnalisé pour les utilisateurs."""
 
     class Role(models.TextChoices):
@@ -39,7 +41,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    date_joined = models.DateTimeField(auto_now_add=True)
 
     groups = models.ManyToManyField(Group, related_name='account_set', blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name='account_user_permissions_set')
