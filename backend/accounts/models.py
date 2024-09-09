@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django_extensions.db.models import TimeStampedModel
 
-
 class UserManager(BaseUserManager):
     """Gestionnaire personnalisé pour le modèle User."""
 
@@ -13,15 +12,20 @@ class UserManager(BaseUserManager):
         if not role:
             raise ValueError("L'utilisateur doit avoir un rôle.")
 
+        # Normalisation de l'email
         email = self.normalize_email(email)
-        user = self.model(email=email, username=username, role=role, is_active=False)
+        # Création de l'utilisateur
+        user = self.model(email=email, username=username, role=role, is_active=True)
+        # Hachage du mot de passe
         user.set_password(password)
+        # Sauvegarde de l'utilisateur dans la base de données
         user.save(using=self._db)
         return user
 
     def create_superuser(self, email, username, password=None):
         """Créer et enregistrer un super-utilisateur avec un email, un username et un mot de passe."""
         user = self.create_user(email, username, role=Account.Role.ADMIN, password=password)
+        # Définir les permissions de super-utilisateur
         user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
@@ -38,15 +42,21 @@ class Account(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=50, choices=Role.choices)
-
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
+    # Relations avec les groupes et les permissions
     groups = models.ManyToManyField(Group, related_name='account_set', blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name='account_user_permissions_set')
 
+    # Champs pour la gestion de l'OTP
+    dob = models.DateField(null=True, blank=True)
+    otp = models.PositiveIntegerField(null=True, blank=True, unique=True)
+    otp_expiry = models.DateTimeField(blank=True, null=True)
+    max_otp_try = models.PositiveIntegerField(default=3)
+    otp_max_out = models.DateTimeField(blank=True, null=True)
 
-
+    # Utilisation du gestionnaire personnalisé
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -61,12 +71,10 @@ class Account(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     def has_module_perms(self, app_label):
         return True
 
-
-# Gestionnaires de modèles proxy
+# Modèles proxy pour les différents rôles d'utilisateurs
 class DiplomeManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(role=Account.Role.DIPLOME)
-
 
 class Diplome(Account):
     """Modèle proxy pour les utilisateurs ayant le rôle 'Diplomé'."""
@@ -75,15 +83,9 @@ class Diplome(Account):
     class Meta:
         proxy = True
 
-
 class InstitutionManager(models.Manager):
-    """
-        models.Manager est la classe de base par défaut fournie par Django pour gérer les requêtes de base de données d'un modèle
-        elle répond parfaitement à nos besions de gestion et de filtrage de requêtes.
-    """
     def get_queryset(self):
         return super().get_queryset().filter(role=Account.Role.INSTITUTION)
-
 
 class Institution(Account):
     """Modèle proxy pour les utilisateurs ayant le rôle 'Institution'."""
@@ -92,11 +94,9 @@ class Institution(Account):
     class Meta:
         proxy = True
 
-
 class AdminManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(role=Account.Role.ADMIN)
-
 
 class Admin(Account):
     """Modèle proxy pour les utilisateurs ayant le rôle 'Admin'."""
