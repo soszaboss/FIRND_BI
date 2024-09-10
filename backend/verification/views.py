@@ -1,6 +1,5 @@
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-from rest_framework.parsers import MultiPartParser
 from rest_framework import status
 from Crypto.Signature import pkcs1_15
 from Crypto.Hash import SHA256
