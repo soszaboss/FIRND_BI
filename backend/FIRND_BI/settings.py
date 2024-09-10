@@ -39,6 +39,8 @@ INSTALLED_APPS = [
 
     #app
     'diplome',
+    'verification',
+    'signature',
     'accounts',
     'authentication.apps.AuthConfig',
 
@@ -87,6 +89,7 @@ WSGI_APPLICATION = 'FIRND_BI.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
 
 DATABASES = {
     "default": {
