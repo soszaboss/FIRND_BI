@@ -41,6 +41,8 @@ class Account(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=11, unique=True, null=True, blank=True)
+
     role = models.CharField(max_length=50, choices=Role.choices)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
