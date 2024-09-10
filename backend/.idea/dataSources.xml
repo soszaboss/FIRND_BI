@@ -4,7 +4,7 @@
     <data-source source="LOCAL" name="firndbi@localhost" uuid="a67fd5bd-8504-4ccc-94b4-a209e7177561">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.mysql.Driver</jdbc-driver>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/firndbi</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>

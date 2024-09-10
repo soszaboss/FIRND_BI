@@ -1,7 +1,6 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
         Class personnalisé pour ajouter des claims supplémentaire tel que
@@ -15,3 +14,5 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['user_role'] = user.role
 
         return token
+
+

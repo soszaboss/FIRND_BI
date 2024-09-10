@@ -1,8 +1,15 @@
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import Diplome, Institution, Admin, Account
 from .serializers import DiplomeUserSerializer, AdminUserSerializer, InstitutionUserSerializer, CreateUserSerializer
 
+
+# class based view pour lister tous les utilisateurs
+class UsersList(generics.ListAPIView):
+    queryset = Account.objects.all()
+    serializer_class = CreateUserSerializer
+
+# class based view pour lister les utilisateurs et créer un utilisateur en fonction de son role
 
 class DiplomeUserList(generics.ListCreateAPIView):
 
@@ -33,7 +40,3 @@ class AdminUserList(generics.ListCreateAPIView):
         queryset = self.get_queryset()
         serializer = AdminUserSerializer(queryset, many=True)
         return Response(serializer.data)
-
-class UsersList(generics.ListAPIView):
-    queryset = Account.objects.all()
-    serializer_class = CreateUserSerializer

@@ -9,7 +9,7 @@ urlpatterns = [
 
     # url pour voir les utilisateurs avec le role de diplomé une method get,
     # et créer un utilisateur avec le role de diplomé une methode post.
-    path('diplomés/', DiplomeUserList.as_view(), name='diplomé-user-list'),
+    path('diplomes/', DiplomeUserList.as_view(), name='diplomé-user-list'),
 
     # url pour voir les utilisateurs administrateurs avec une method get,
     # et créer un utilisateur avec le role d'institution une methode post.
