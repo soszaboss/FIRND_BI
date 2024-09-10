@@ -2,10 +2,10 @@
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="firndbi@localhost" uuid="a67fd5bd-8504-4ccc-94b4-a209e7177561">
-      <driver-ref>postgresql</driver-ref>
+      <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/firndbi</jdbc-url>
+      <jdbc-driver>org.mysql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/firndbi</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
