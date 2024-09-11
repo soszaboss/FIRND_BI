@@ -38,9 +38,7 @@ INSTALLED_APPS = [
     "corsheaders",
 
     #app
-    'diplome',
-    'verification',
-    'signature',
+    'documents',
     'accounts',
     'authentication.apps.AuthConfig',
 

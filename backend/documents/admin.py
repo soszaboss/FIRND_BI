@@ -1,5 +1,5 @@
 from django.contrib import admin
-from diplome.models import Diploma
+from documents.models import Diploma
 
 
 @admin.register(Diploma)

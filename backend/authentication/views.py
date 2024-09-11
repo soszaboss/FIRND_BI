@@ -88,14 +88,16 @@ class VerifyOTPView(APIView):
     """Vue pour vérifier le code OTP."""
 
     def post(self, request, *args, **kwargs):
-        otp = request.data.get('otp')
-
+        otp = int(request.data.get('otp'))
+        print(otp)
+        print(type(otp))
         if not otp:
             return Response("Veuillez entrer un OTP.", status=status.HTTP_400_BAD_REQUEST)
 
 
         try:
             user = Account.objects.get(otp=otp)
+            print(f"user: {user}")
         except Account.DoesNotExist:
             return Response("Identifiants invalides.", status=status.HTTP_400_BAD_REQUEST)
 

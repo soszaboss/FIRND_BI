@@ -1,5 +1,5 @@
 .venv/
-diplomas_downloaded/
+downloaded_documents/
 media/diplomas/
 watermark.pdf
 .env*.pyc

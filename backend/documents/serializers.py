@@ -4,4 +4,4 @@ from .models import Diploma
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Diploma
-        fields = ['id', 'diploma']
+        fields = ['user', "diploma"]
