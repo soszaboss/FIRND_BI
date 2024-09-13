@@ -114,6 +114,14 @@ Suivez ces étapes pour installer et configurer `FIRND_BI` localement :
 
    Ouvrez un navigateur web et accédez à `http://127.0.0.1:8000/` pour voir l'application en action.
 
+8. **Accéder à la documentation de l'api :**
+
+   Ouvrez un navigateur web et accédez à pour voir la documentation:
+- `http://127.0.0.1:8000/api/schema/swagger-ui/`
+- `http://127.0.0.1:8000/api/schema/redoc/` 
+
+   
+
 ## Utilisation
 
 Voici un aperçu des principales fonctionnalités de l'application `FIRND_BI` et de la façon dont elles sont organisées :
