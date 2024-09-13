@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'drf_spectacular',
+#    'drf_spectacular_sidecar',  # required for Django collectstatic discovery
     "corsheaders",
 
     #app
@@ -150,7 +152,22 @@ MEDIA_ROOT = BASE_DIR / 'media'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'FIRND BI',
+    'DESCRIPTION': 'Documentation pour la consomation de l api',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+
+        # OTHER SETTINGS
+
+    #'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    #'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    #'REDOC_DIST': 'SIDECAR',
+
 }
 
 # setting SIMPLE_JWT

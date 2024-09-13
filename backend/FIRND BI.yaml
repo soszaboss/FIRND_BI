@@ -1,0 +1,579 @@
+openapi: 3.0.3
+info:
+  title: FIRND BI
+  version: 1.0.0
+  description: Documentation pour la consomation de l api
+paths:
+  /auth/api/token/:
+    post:
+      operationId: auth_api_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MyTokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MyTokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MyTokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyTokenObtainPair'
+          description: ''
+  /auth/api/token/refresh/:
+    post:
+      operationId: auth_api_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /auth/login/:
+    post:
+      operationId: auth_login_create
+      description: Vue pour gérer l'authentification avec OTP.
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /auth/verify-otp-via-email/:
+    post:
+      operationId: auth_verify_otp_via_email_create
+      description: Vue pour vérifier le code OTP.
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /auth/verify-otp-via-sms/:
+    post:
+      operationId: auth_verify_otp_via_sms_create
+      description: Vue pour gérer l'authentification avec OTP.
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /documents/download-document/{url}/:
+    get:
+      operationId: documents_download_document_retrieve
+      parameters:
+      - in: path
+        name: url
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /documents/download-public-key/:
+    get:
+      operationId: documents_download_public_key_retrieve
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /documents/signe-document/{url}/:
+    post:
+      operationId: documents_signe_document_create
+      parameters:
+      - in: path
+        name: url
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /documents/verify-document/:
+    post:
+      operationId: documents_verify_document_create
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /files/:
+    get:
+      operationId: files_list
+      tags:
+      - files
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/File'
+          description: ''
+    post:
+      operationId: files_create
+      tags:
+      - files
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/File'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/File'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/File'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+          description: ''
+  /files/{id}/:
+    get:
+      operationId: files_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        description: A unique value identifying this diploma.
+        required: true
+      tags:
+      - files
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+          description: ''
+    put:
+      operationId: files_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        description: A unique value identifying this diploma.
+        required: true
+      tags:
+      - files
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/File'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/File'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/File'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+          description: ''
+    patch:
+      operationId: files_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        description: A unique value identifying this diploma.
+        required: true
+      tags:
+      - files
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedFile'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFile'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+          description: ''
+    delete:
+      operationId: files_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        description: A unique value identifying this diploma.
+        required: true
+      tags:
+      - files
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /users/:
+    get:
+      operationId: users_list
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreateUser'
+          description: ''
+  /users/admins/:
+    get:
+      operationId: users_admins_list
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiplomeUser'
+          description: ''
+    post:
+      operationId: users_admins_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiplomeUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DiplomeUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DiplomeUser'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiplomeUser'
+          description: ''
+  /users/diplomes/:
+    get:
+      operationId: users_diplomes_list
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiplomeUser'
+          description: ''
+    post:
+      operationId: users_diplomes_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiplomeUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DiplomeUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DiplomeUser'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiplomeUser'
+          description: ''
+  /users/institutions/:
+    get:
+      operationId: users_institutions_list
+      tags:
+      - users
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiplomeUser'
+          description: ''
+    post:
+      operationId: users_institutions_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiplomeUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DiplomeUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DiplomeUser'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiplomeUser'
+          description: ''
+components:
+  schemas:
+    CreateUser:
+      type: object
+      description: |-
+        Création d'un serializer pour la de création de comptes utilisateurs
+        avec une gestion de differentes roles ( admin, institution, diplomé )
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        username:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        is_active:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - is_active
+      - last_login
+      - password
+      - role
+      - username
+    DiplomeUser:
+      type: object
+      description: |-
+        Création d'un serializer pour la de création de comptes utilisateurs
+        avec une gestion de differentes roles ( admin, institution, diplomé )
+      properties:
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        username:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        is_active:
+          type: boolean
+          readOnly: true
+      required:
+      - email
+      - is_active
+      - last_login
+      - password
+      - role
+      - username
+    File:
+      type: object
+      properties:
+        user:
+          type: integer
+        diploma:
+          type: string
+          format: uri
+      required:
+      - diploma
+      - user
+    MyTokenObtainPair:
+      type: object
+      description: |-
+        Class personnalisé pour ajouter des claims supplémentaire tel que
+        le role de l'utilisateur.
+      properties:
+        email:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
+    PatchedFile:
+      type: object
+      properties:
+        user:
+          type: integer
+        diploma:
+          type: string
+          format: uri
+    RoleEnum:
+      enum:
+      - ADMIN
+      - DIPLOME
+      - INSTITUTION
+      type: string
+      description: |-
+        * `ADMIN` - Admin
+        * `DIPLOME` - Diplomé
+        * `INSTITUTION` - Institution
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

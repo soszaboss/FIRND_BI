@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from rest_framework import routers
 
 from documents.views import FilesViewSet
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 
 
@@ -20,5 +21,10 @@ urlpatterns += [
     path('auth/', include('authentication.urls')),
     path('users/', include('accounts.urls')),
     path('documents/', include('documents.urls')),
+
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
