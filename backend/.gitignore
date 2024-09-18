@@ -4,3 +4,5 @@ media/diplomas/
 watermark.pdf
 .env*.pyc
 *.pyc
+env/
+%SystemDrive%/
