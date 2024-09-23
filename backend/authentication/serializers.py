@@ -15,4 +15,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
 
+from rest_framework import serializers
+from .models import Entreprise
+
+class EntrepriseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Entreprise
+        fields = '__all__'  # Tu peux choisir de limiter les champs si nécessaire
 

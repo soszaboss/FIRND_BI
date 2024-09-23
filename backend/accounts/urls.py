@@ -1,4 +1,6 @@
 from django.urls import path
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 from .views import AdminUserList, DiplomeUserList, InstitutionUserList, UsersList
 
 urlpatterns = [
@@ -14,6 +16,10 @@ urlpatterns = [
     # url pour voir les utilisateurs administrateurs avec une method get,
     # et créer un utilisateur avec le role d'institution une methode post.
     path('institutions/', InstitutionUserList.as_view(), name='institution-user-list'),
+
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+path('auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+
 
     # url pour voir tous les utilisateurs
     path('', UsersList.as_view(), name='user-list'),

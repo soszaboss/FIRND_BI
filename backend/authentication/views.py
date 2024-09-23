@@ -76,7 +76,7 @@ class VerifyOTPView(APIView):
         # Réinitialisation des champs liés à l'OTP
         user.otp = None
         user.otp_expiry = None
-        user.max_otp_try = 3
+        user.max_otp_try = 20
         user.otp_max_out = None
         user.save()
 
@@ -84,3 +84,12 @@ class VerifyOTPView(APIView):
         refresh = RefreshToken.for_user(user)
         return Response(get_tokens_for_user(user), status=status.HTTP_200_OK)
 
+
+
+from rest_framework import generics
+from .models import Entreprise
+from .serializers import EntrepriseSerializer  # Assure-toi d'avoir un serializer approprié
+
+class EntrepriseCreateView(generics.CreateAPIView):
+    queryset = Entreprise.objects.all()
+    serializer_class = EntrepriseSerializer

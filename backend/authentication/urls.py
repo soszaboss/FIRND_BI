@@ -13,4 +13,8 @@ urlpatterns = [
     # URL pour la gestion du processus d'OTP
     path('login/', LoginView.as_view(), name='login'),
     path('verify-otp/', VerifyOTPView.as_view(), name='verify_otp'),
+    # Route pour obtenir le token JWT
+    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # Route pour rafraîchir le token JWT
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

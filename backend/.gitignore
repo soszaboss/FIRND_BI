@@ -1,5 +1,6 @@
-.venv/
+.venv
 diplomas_downloaded/
 media/diplomas/
 watermark.pdf
-.env
+FIRND_BI/.env
+backend/.env
