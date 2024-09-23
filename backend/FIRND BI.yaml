@@ -82,17 +82,302 @@ paths:
       responses:
         '200':
           description: No response body
-  /auth/verify-otp-via-sms/:
-    post:
-      operationId: auth_verify_otp_via_sms_create
-      description: Vue pour gérer l'authentification avec OTP.
+  /documents/demandes-soumission/:
+    get:
+      operationId: documents_demandes_soumission_list
       tags:
-      - auth
+      - documents
       security:
       - jwtAuth: []
       - {}
       responses:
         '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DemandeSoumission'
+          description: ''
+    post:
+      operationId: documents_demandes_soumission_create
+      tags:
+      - documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemandeSoumission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DemandeSoumission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DemandeSoumission'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandeSoumission'
+          description: ''
+  /documents/demandes-soumission/{id}/:
+    get:
+      operationId: documents_demandes_soumission_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandeSoumission'
+          description: ''
+    put:
+      operationId: documents_demandes_soumission_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DemandeSoumission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DemandeSoumission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DemandeSoumission'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandeSoumission'
+          description: ''
+    patch:
+      operationId: documents_demandes_soumission_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDemandeSoumission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDemandeSoumission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDemandeSoumission'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandeSoumission'
+          description: ''
+    delete:
+      operationId: documents_demandes_soumission_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /documents/demandes-soumission/status/:
+    get:
+      operationId: documents_demandes_soumission_status_retrieve
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /documents/diplomas/:
+    get:
+      operationId: documents_diplomas_list
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Diploma'
+          description: ''
+    post:
+      operationId: documents_diplomas_create
+      tags:
+      - documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Diploma'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Diploma'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Diploma'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diploma'
+          description: ''
+  /documents/diplomas/{id}/:
+    get:
+      operationId: documents_diplomas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diploma'
+          description: ''
+    put:
+      operationId: documents_diplomas_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Diploma'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Diploma'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Diploma'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diploma'
+          description: ''
+    patch:
+      operationId: documents_diplomas_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDiploma'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDiploma'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDiploma'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diploma'
+          description: ''
+    delete:
+      operationId: documents_diplomas_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
           description: No response body
   /documents/download-document/{url}/:
     get:
@@ -121,6 +406,149 @@ paths:
       - {}
       responses:
         '200':
+          description: No response body
+  /documents/etudiants/:
+    get:
+      operationId: documents_etudiants_list
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Etudiant'
+          description: ''
+    post:
+      operationId: documents_etudiants_create
+      tags:
+      - documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Etudiant'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Etudiant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Etudiant'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Etudiant'
+          description: ''
+  /documents/etudiants/{id}/:
+    get:
+      operationId: documents_etudiants_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Etudiant'
+          description: ''
+    put:
+      operationId: documents_etudiants_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Etudiant'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Etudiant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Etudiant'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Etudiant'
+          description: ''
+    patch:
+      operationId: documents_etudiants_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEtudiant'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEtudiant'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEtudiant'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Etudiant'
+          description: ''
+    delete:
+      operationId: documents_etudiants_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - documents
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
           description: No response body
   /documents/signe-document/{url}/:
     post:
@@ -451,13 +879,20 @@ components:
         Création d'un serializer pour la de création de comptes utilisateurs
         avec une gestion de differentes roles ( admin, institution, diplomé )
       properties:
+        first_name:
+          type: string
+          maxLength: 35
+        last_name:
+          type: string
+          maxLength: 35
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 15
         password:
           type: string
           writeOnly: true
           maxLength: 128
-        username:
-          type: string
-          maxLength: 100
         email:
           type: string
           format: email
@@ -476,24 +911,99 @@ components:
           readOnly: true
       required:
       - email
+      - first_name
       - is_active
       - last_login
+      - last_name
       - password
       - role
-      - username
+    DemandeSoumission:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        titre:
+          type: string
+          maxLength: 120
+        commentaire:
+          type: string
+          nullable: true
+        etudiants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Etudiant'
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          minimum: -2147483648
+          maximum: 2147483647
+        diplome:
+          type: array
+          items:
+            $ref: '#/components/schemas/Diploma'
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - diplome
+      - etudiants
+      - id
+      - modified
+      - titre
+    Diploma:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        user:
+          type: integer
+        diploma:
+          type: string
+          format: uri
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created
+      - diploma
+      - id
+      - modified
+      - user
     DiplomeUser:
       type: object
       description: |-
         Création d'un serializer pour la de création de comptes utilisateurs
         avec une gestion de differentes roles ( admin, institution, diplomé )
       properties:
+        first_name:
+          type: string
+          maxLength: 35
+        last_name:
+          type: string
+          maxLength: 35
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 15
         password:
           type: string
           writeOnly: true
           maxLength: 128
-        username:
-          type: string
-          maxLength: 100
         email:
           type: string
           format: email
@@ -512,11 +1022,46 @@ components:
           readOnly: true
       required:
       - email
+      - first_name
       - is_active
       - last_login
+      - last_name
       - password
       - role
-      - username
+    Etudiant:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        diplomate:
+          type: integer
+        code:
+          type: string
+          format: uuid
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        phone_number:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - code
+      - created
+      - diplomate
+      - full_name
+      - id
+      - modified
+      - phone_number
     File:
       type: object
       properties:
@@ -543,6 +1088,86 @@ components:
       required:
       - email
       - password
+    PatchedDemandeSoumission:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        titre:
+          type: string
+          maxLength: 120
+        commentaire:
+          type: string
+          nullable: true
+        etudiants:
+          type: array
+          items:
+            $ref: '#/components/schemas/Etudiant'
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          minimum: -2147483648
+          maximum: 2147483647
+        diplome:
+          type: array
+          items:
+            $ref: '#/components/schemas/Diploma'
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedDiploma:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        user:
+          type: integer
+        diploma:
+          type: string
+          format: uri
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedEtudiant:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        diplomate:
+          type: integer
+        code:
+          type: string
+          format: uuid
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        phone_number:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
     PatchedFile:
       type: object
       properties:
@@ -561,6 +1186,20 @@ components:
         * `ADMIN` - Admin
         * `DIPLOME` - Diplomé
         * `INSTITUTION` - Institution
+    StatusEnum:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      type: integer
+      description: |-
+        * `1` - SOUMIS
+        * `2` - TRAITER
+        * `3` - RECEPTION
+        * `4` - FIN DE TRAITEMENT
+        * `5` - REJET
     TokenRefresh:
       type: object
       properties:

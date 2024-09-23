@@ -13,5 +13,5 @@ urlpatterns = [
     # URL pour la gestion du processus d'OTP
     path('login/', LoginViewViaMail.as_view(), name='login'),
     path('verify-otp-via-email/', VerifyOTPView.as_view(), name='verify-otp-via-mail'),
-    path('verify-otp-via-sms/', LoginViewViaSms.as_view(), name='verify-otp-via-sms'),
+    #path('verify-otp-via-sms/', LoginViewViaSms.as_view(), name='verify-otp-via-sms'),
 ]

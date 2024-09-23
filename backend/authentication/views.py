@@ -13,6 +13,7 @@ from django.contrib.auth import authenticate
 
 
 class LoginViewViaMail(APIView):
+
     """Vue pour gérer l'authentification avec OTP."""
 
     def post(self, request, *args, **kwargs):

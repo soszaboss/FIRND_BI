@@ -1,10 +1,13 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import FileResponse
+from .serializers import DiplomaSerializer, DemandeSoumissionSerializer, DemandeSoumissionStatusSerializer, \
+    EtudiantSerializer
+from rest_framework import generics
+from .models import Diploma, DemandeSoumission, DemandeSoumissionStatus, Etudiant, TypeDiplome
+from django.http import FileResponse, HttpResponse
 import os
-
-from .models import Diploma
 from .serializers import FileSerializer
 from .utils.download_and_watermark_document import download_pdf_file, download_and_save_document
 from .utils.signature import hasher_pdf, generer_paire_de_cles, signer_hash
@@ -38,6 +41,10 @@ class FilesViewSet(viewsets.ModelViewSet):
     queryset = Diploma.objects.all()
     serializer_class = FileSerializer
 
+class EtudiantsViewSet(viewsets.ModelViewSet):
+    queryset = Etudiant.objects.all()
+    serializer_class = EtudiantSerializer
+
 @api_view(['GET'])
 def file_watermarked(request, url):
     filepath = download_pdf_file(url)
@@ -49,10 +56,6 @@ def file_watermarked(request, url):
 
 chemin_signature = "./documents/utils/signature et cle publique/signature.bin"
 chemin_cle_publique = "./documents/utils/signature et cle publique/cle_publique.pem"
-
-from django.http import FileResponse, HttpResponse
-from rest_framework.decorators import api_view
-import os
 
 @api_view(['POST'])
 def signer_pdf(request, url):
@@ -140,3 +143,36 @@ def verifier_pdf(request):
     except Exception as e:
         return Response({"erreur": f"Une erreur s'est produite : {str(e)}"},
                         status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class DiplomaListCreateView(generics.ListCreateAPIView):
+    queryset = Diploma.objects.all()
+    serializer_class = DiplomaSerializer
+
+
+class DiplomaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Diploma.objects.all()
+    serializer_class = DiplomaSerializer
+
+class DemandeSoumissionListCreateView(generics.ListCreateAPIView):
+    queryset = DemandeSoumission.objects.all()
+    serializer_class = DemandeSoumissionSerializer
+
+class DemandeSoumissionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = DemandeSoumission.objects.all()
+    serializer_class = DemandeSoumissionSerializer
+
+@api_view(['GET'])
+def demande_soumission_status(request):
+    status_choices = DemandeSoumissionStatus.choices
+    print(status_choices)
+    data = [{'key': key, 'label': label} for key, label in status_choices]
+
+    return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def type_diplome_status(request):
+    status_choices = TypeDiplome.choices
+    print(status_choices)
+    data = [{'key': key, 'label': label} for key, label in status_choices]
+
+    return Response(data, status=status.HTTP_200_OK)

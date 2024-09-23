@@ -12,11 +12,10 @@ class CreateUserSerializer(serializers.ModelSerializer):
         model = Account
 
         # exclusion des champs ci-dessous lors de l'affichage et saisie des données
-        fields = ['password', 'username', 'email', 'role', 'last_login', 'is_active']
+        fields = ['username' ,'phone_number','password', 'email', 'role', 'last_login', 'is_active']
 
         extra_kwargs = {
             'password': {'write_only': True, 'required': True},
-            'username': {'required': True},
             'email': {'required': True},
             'role':{'read_only': True},
             'last_login':{'read_only': True},
@@ -43,7 +42,6 @@ class InstitutionUserSerializer(CreateUserSerializer):
 
     def create(self, validated_data):
         user = Account.objects.create_user(
-            username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
             role=Account.Role.INSTITUTION
@@ -56,7 +54,6 @@ class AdminUserSerializer(CreateUserSerializer):
 
     def create(self, validated_data):
         user = Account.objects.create_user(
-            username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
             role=Account.Role.ADMIN
