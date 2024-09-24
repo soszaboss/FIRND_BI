@@ -190,37 +190,5 @@
     "submissionDateRow": "2024-09-24",
     "authorEmail": "Absa@simmmple.com",
     "viewText": "Details"
-  },
-  {
-    "titre": "BEP_2024-09-24csbs",
-    "annee": "2024-09-24",
-    "commentaire": "ducybu buicb",
-    "selectedEtudiants": [
-      {
-        "id": 1,
-        "code": "850ef924-db90-4e64-b075-a7d6e34cd4b5",
-        "first_name": "Test",
-        "last_name": "Test",
-        "phone_number": "781208599"
-      },
-      {
-        "id": 2,
-        "code": "750c5a56-638e-45cf-97be-26b2eaff644e",
-        "first_name": "Test1",
-        "last_name": "Test1",
-        "phone_number": "781208590"
-      }
-    ],
-    "fileUrls": [
-      "https://firebasestorage.googleapis.com/v0/b/firndebi.appspot.com/o/soumission%2Fproject_c4.zip?alt=media&token=fd32f589-ef67-4619-bcca-083ca36e4f8f"
-    ],
-    "etat": 1,
-    "displayEtat": "SOUMIS",
-    "authorRow": "Absa Diop",
-    "diplomaRow": "BEP",
-    "statusRow": "SOUMIS",
-    "submissionDateRow": "2024-09-24",
-    "authorEmail": "Absa@simmmple.com",
-    "viewText": "Details"
   }
 ]
