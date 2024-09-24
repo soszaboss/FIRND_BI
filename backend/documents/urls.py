@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import file_watermarked, signer_pdf, telecharger_cle_publique, verifier_pdf, DiplomaListCreateView, \
     DiplomaDetailView, DemandeSoumissionDetailView, \
-    DemandeSoumissionListCreateView, demande_soumission_status, type_diplome_status
+    DemandeSoumissionListCreateView, demande_soumission_status, type_diplome_status, SauvegardeJSON
 
 urlpatterns = [
     path('download-document/<path:url>/', file_watermarked, name='download-document'),
@@ -15,5 +15,7 @@ urlpatterns = [
     path('demande-soumission/<str:pk>/', DemandeSoumissionDetailView.as_view(), name='demande-soumission-detail'),
     path('demande-soumission-status/', demande_soumission_status, name='demande-soumission-status'),
     path('type-diplome-status/', type_diplome_status, name='type-diplome-status'),
+
+    path('sauvegarde-json/', SauvegardeJSON.as_view(), name='sauvegarde-json'),
 
 ]

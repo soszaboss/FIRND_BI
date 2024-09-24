@@ -12,7 +12,8 @@ from .serializers import FileSerializer
 from .utils.download_and_watermark_document import download_pdf_file, download_and_save_document
 from .utils.signature import hasher_pdf, generer_paire_de_cles, signer_hash
 from .utils.verification import verifier_signature
-
+from rest_framework.views import APIView
+import json
 
 def return_pfd_file(filepath: str):
     try:
@@ -176,3 +177,40 @@ def type_diplome_status(request):
     data = [{'key': key, 'label': label} for key, label in status_choices]
 
     return Response(data, status=status.HTTP_200_OK)
+
+class SauvegardeJSON(APIView):
+    def post(self, request):
+        data = request.data
+        try:
+            # Vérifier si le fichier existe déjà
+            if os.path.exists(os.getcwd()+"/media/soumission.json"):
+                with open(os.getcwd()+"/media/soumission.json", "r") as json_file:
+                    # Charger les données existantes
+                    existing_data = json.load(json_file)
+            else:
+                existing_data = []  # Créer une nouvelle liste si le fichier n'existe pas
+
+            # Ajouter les nouvelles données à la liste existante
+            existing_data.append(data)
+
+            # Sauvegarder les données mises à jour dans le fichier JSON
+            with open(os.getcwd()+"/media/soumission.json", "w") as json_file:
+                json.dump(existing_data, json_file, indent=2)
+
+            return Response("Données sauvegardées avec succès !", status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response(f"Erreur lors de la sauvegarde des données : {str(e)}",
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def get(self, request):
+        try:
+            # Lire les données à partir du fichier JSON
+            if os.path.exists(os.getcwd()+"/media/soumission.json"):
+                with open(os.getcwd()+"/media/soumission.json", "r") as json_file:
+                    data = json.load(json_file)
+                return Response(data, status=status.HTTP_200_OK)
+            else:
+                return Response("Fichier non trouvé.", status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response(f"Erreur lors de la lecture des données : {str(e)}",
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
