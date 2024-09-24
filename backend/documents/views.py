@@ -1,15 +1,19 @@
-import os
-from django.http import FileResponse
+from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from .models import Diploma
+from .serializers import DiplomaSerializer, DemandeSoumissionSerializer, DemandeSoumissionStatusSerializer, \
+    EtudiantSerializer
+from rest_framework import generics
+from .models import Diploma, DemandeSoumission, DemandeSoumissionStatus, Etudiant, TypeDiplome
+from django.http import FileResponse, HttpResponse
+import os
 from .serializers import FileSerializer
 from .utils.download_and_watermark_document import download_pdf_file, download_and_save_document
 from .utils.signature import hasher_pdf, generer_paire_de_cles, signer_hash
 from .utils.verification import verifier_signature
-
+from rest_framework.views import APIView
+import json
 
 def return_pfd_file(filepath: str):
     try:
@@ -38,6 +42,9 @@ class FilesViewSet(viewsets.ModelViewSet):
     queryset = Diploma.objects.all()
     serializer_class = FileSerializer
 
+class EtudiantsViewSet(viewsets.ModelViewSet):
+    queryset = Etudiant.objects.all()
+    serializer_class = EtudiantSerializer
 
 @api_view(['GET'])
 def file_watermarked(request, url):
@@ -51,11 +58,6 @@ def file_watermarked(request, url):
 
 chemin_signature = "./documents/utils/signature et cle publique/signature.bin"
 chemin_cle_publique = "./documents/utils/signature et cle publique/cle_publique.pem"
-
-from django.http import FileResponse, HttpResponse
-from rest_framework.decorators import api_view
-import os
-
 
 @api_view(['POST'])
 def signer_pdf(request, url):
@@ -143,97 +145,72 @@ def verifier_pdf(request):
         return Response({"erreur": f"Une erreur s'est produite : {str(e)}"},
                         status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-import requests
+class DiplomaListCreateView(generics.ListCreateAPIView):
+    queryset = Diploma.objects.all()
+    serializer_class = DiplomaSerializer
 
 
-class CreatePDFView(APIView):
+class DiplomaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Diploma.objects.all()
+    serializer_class = DiplomaSerializer
+
+class DemandeSoumissionListCreateView(generics.ListCreateAPIView):
+    queryset = DemandeSoumission.objects.all()
+    serializer_class = DemandeSoumissionSerializer
+
+class DemandeSoumissionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = DemandeSoumission.objects.all()
+    serializer_class = DemandeSoumissionSerializer
+
+@api_view(['GET'])
+def demande_soumission_status(request):
+    status_choices = DemandeSoumissionStatus.choices
+    print(status_choices)
+    data = [{'key': key, 'label': label} for key, label in status_choices]
+
+    return Response(data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def type_diplome_status(request):
+    status_choices = TypeDiplome.choices
+    print(status_choices)
+    data = [{'key': key, 'label': label} for key, label in status_choices]
+
+    return Response(data, status=status.HTTP_200_OK)
+
+class SauvegardeJSON(APIView):
     def post(self, request):
-        headers = {
-            "X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        }
-        url = "https://api.docuseal.co/"
-
+        data = request.data
         try:
-            print(request.data)
-            response = requests.post(url + "templates/pdf", json=request.data, headers=headers)
-            data = response.json()
-            tem_id = data.get("id")
-            sub_email = data.get("author", {}).get("email")
-            sub_uuid = data.get("submitters", [])[0].get("uuid")
-            payload = {
-                "template_id": tem_id,
-                "submitters": [
-                    {"role": "First Party", "email": sub_email, "uuid": sub_uuid}
-                ],
-                "status": "opened",
-            }
-            response = requests.post(url + "submissions", json=payload, headers=headers)
-            donn = response.json()[0]
-            return Response(donn.get("id"))
-        except requests.exceptions.RequestException as e:
-            return Response({"error": "Erreur de soumission"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            # Vérifier si le fichier existe déjà
+            if os.path.exists(os.getcwd()+"/media/soumission.json"):
+                with open(os.getcwd()+"/media/soumission.json", "r") as json_file:
+                    # Charger les données existantes
+                    existing_data = json.load(json_file)
+            else:
+                existing_data = []  # Créer une nouvelle liste si le fichier n'existe pas
 
+            # Ajouter les nouvelles données à la liste existante
+            existing_data.append(data)
 
-class GetPDFView(APIView):
+            # Sauvegarder les données mises à jour dans le fichier JSON
+            with open(os.getcwd()+"/media/soumission.json", "w") as json_file:
+                json.dump(existing_data, json_file, indent=2)
+
+            return Response("Données sauvegardées avec succès !", status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response(f"Erreur lors de la sauvegarde des données : {str(e)}",
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     def get(self, request):
-        headers = {
-            "X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah",
-            "Accept": "application/json",
-        }
-        url = "https://api.docuseal.co/"
-
         try:
-            response = requests.get(url + "templates", headers=headers)
-            dic = response.json()
-            data = dic.get("data", [])
-            tem_id = data[0].get("id")
-            sub_email = data[0].get("author", {}).get("email")
-            sub_uuid = data[0].get("submitters", [])[0].get("uuid")
-            payload = {
-                "template_id": tem_id,
-                "send_email": False,
-                "submitters": [
-                    {"role": "First Party", "email": sub_email, "uuid": sub_uuid}
-                ],
-                "status": "opening",
-            }
-            return Response({"temp": data})
-        except requests.exceptions.RequestException as e:
-            return Response({"error": "Something went wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-class GetSubmissionView(APIView):
-    def get(self, request):
-        headers = {
-            "X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah",
-            "Accept": "application/json",
-        }
-        url = "https://api.docuseal.co/"
-
-        try:
-            response = requests.get(url + "submissions", headers=headers)
-            dic = response.json()
-            data = dic.get("data", [])
-            return Response(data)
-        except requests.exceptions.RequestException as e:
-            return Response({"error": "Something went wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-class TelechargeView(APIView):
-    def get(self, request, id):
-        url = f"https://api.docuseal.co/submitters/{id}"
-
-        headers = {"X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah"}
-
-        try:
-            response = requests.get(url, headers=headers)
-            return Response(response.json().get("documents")[0])
-        except requests.exceptions.RequestException as e:
-            return Response({"error": "Erreur lors de la récupération des données"},
+            # Lire les données à partir du fichier JSON
+            if os.path.exists(os.getcwd()+"/media/soumission.json"):
+                with open(os.getcwd()+"/media/soumission.json", "r") as json_file:
+                    data = json.load(json_file)
+                return Response(data, status=status.HTTP_200_OK)
+            else:
+                return Response("Fichier non trouvé.", status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response(f"Erreur lors de la lecture des données : {str(e)}",
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)

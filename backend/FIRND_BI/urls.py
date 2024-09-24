@@ -3,8 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
-
-from documents.views import FilesViewSet
+from documents.views import FilesViewSet, EtudiantsViewSet
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 
@@ -12,6 +11,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 router = routers.DefaultRouter()
 
 router.register(r'files', FilesViewSet, basename='files')
+router.register(r'etudiants', EtudiantsViewSet, basename='etudiants')
 
 urlpatterns = router.urls
 

@@ -5,7 +5,7 @@ from django_extensions.db.models import TimeStampedModel
 class UserManager(BaseUserManager):
     """Gestionnaire personnalisé pour le modèle User."""
 
-    def create_user(self, email, username, role, password=None):
+    def create_user(self, email, username, role, phone_number,password=None):
         """Créer et enregistrer un utilisateur avec un email, un username, un rôle et un mot de passe."""
         if not email:
             raise ValueError("L'utilisateur doit avoir une adresse email.")
@@ -15,16 +15,16 @@ class UserManager(BaseUserManager):
         # Normalisation de l'email
         email = self.normalize_email(email)
         # Création de l'utilisateur
-        user = self.model(email=email, username=username, role=role, is_active=True)
+        user = self.model(email=email, username=username, role=role, phone_number=phone_number,is_active=True)
         # Hachage du mot de passe
         user.set_password(password)
         # Sauvegarde de l'utilisateur dans la base de données
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, password=None):
+    def create_superuser(self, email, username, phone_number,password=None):
         """Créer et enregistrer un super-utilisateur avec un email, un username et un mot de passe."""
-        user = self.create_user(email, username, role=Account.Role.ADMIN, password=password)
+        user = self.create_user(email, username, role=Account.Role.ADMIN, password=password, phone_number=phone_number)
         # Définir les permissions de super-utilisateur
         user.is_superuser = True
         user.is_staff = True
@@ -39,9 +39,9 @@ class Account(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         DIPLOME = "DIPLOME", "Diplomé"
         INSTITUTION = "INSTITUTION", "Institution"
 
-    username = models.CharField(max_length=100, unique=True)
+    username = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=11, unique=True, null=True, blank=True)
+    phone_number = models.CharField(max_length=11, unique=True)
 
     role = models.CharField(max_length=50, choices=Role.choices)
     is_active = models.BooleanField(default=True)
@@ -62,7 +62,7 @@ class Account(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'phone_number']
 
     def __str__(self):
         return self.email
