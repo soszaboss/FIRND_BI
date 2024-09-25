@@ -196,42 +196,6 @@
     "statusRow": "SOUMIS",
     "submissionDateRow": "2024-09-24",
     "viewText": "Details"
-  },
-  {
-    "titre": "BTS_2024-09-24",
-    "annee": "2024-09-24",
-    "commentaire": "",
-    "selectedEtudiants": [
-      {
-        "id": 1,
-        "code": "012e347f-e6d3-44fc-abe7-d502c4fce1d3",
-        "first_name": "elmane",
-        "last_name": "faye",
-        "phone_number": "778508294"
-      },
-      {
-        "id": 1,
-        "code": "012e347f-e6d3-44fc-abe7-d502c4fce1d3",
-        "first_name": "elmane",
-        "last_name": "faye",
-        "phone_number": "778508294"
-      },
-      {
-        "id": 1,
-        "code": "012e347f-e6d3-44fc-abe7-d502c4fce1d3",
-        "first_name": "elmane",
-        "last_name": "faye",
-        "phone_number": "778508294"
-      }
-    ],
-    "fileUrls": [],
-    "etat": 1,
-    "displayEtat": "SOUMIS",
-    "authorRow": "Absa Diop",
-    "diplomaRow": "BTS",
-    "statusRow": "SOUMIS",
-    "submissionDateRow": "2024-09-24",
-    "authorEmail": "Absa@simmmple.com",
-    "viewText": "Details"
   }
+ 
 ]
