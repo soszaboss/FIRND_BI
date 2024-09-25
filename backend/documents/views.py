@@ -14,6 +14,8 @@ from .utils.signature import hasher_pdf, generer_paire_de_cles, signer_hash
 from .utils.verification import verifier_signature
 from rest_framework.views import APIView
 import json
+from rest_framework.views import APIView
+import requests
 
 def return_pfd_file(filepath: str):
     try:
@@ -213,4 +215,81 @@ class SauvegardeJSON(APIView):
                 return Response("Fichier non trouvé.", status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response(f"Erreur lors de la lecture des données : {str(e)}",
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class CreatePDFView(APIView):
+    def post(self, request):
+        headers = {
+            "X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+        url = "https://api.docuseal.co/"
+        try:
+            print(request.data)
+            response = requests.post(url + "templates/pdf", json=request.data, headers=headers)
+            data = response.json()
+            tem_id = data.get("id")
+            sub_email = data.get("author", {}).get("email")
+            sub_uuid = data.get("submitters", [])[0].get("uuid")
+            payload = {
+                "template_id": tem_id,
+                "submitters": [
+                    {"role": "First Party", "email": sub_email, "uuid": sub_uuid}
+                ],
+                "status": "opened",
+            }
+            response = requests.post(url + "submissions", json=payload, headers=headers)
+            donn = response.json()[0]
+            return Response(donn.get("id"))
+        except requests.exceptions.RequestException as e:
+            return Response({"error": "Erreur de soumission"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class GetPDFView(APIView):
+    def get(self, request):
+        headers = {
+            "X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah",
+            "Accept": "application/json",
+        }
+        url = "https://api.docuseal.co/"
+        try:
+            response = requests.get(url + "templates", headers=headers)
+            dic = response.json()
+            data = dic.get("data", [])
+            tem_id = data[0].get("id")
+            sub_email = data[0].get("author", {}).get("email")
+            sub_uuid = data[0].get("submitters", [])[0].get("uuid")
+            payload = {
+                "template_id": tem_id,
+                "send_email": False,
+                "submitters": [
+                    {"role": "First Party", "email": sub_email, "uuid": sub_uuid}
+                ],
+                "status": "opening",
+            }
+            return Response({"temp": data})
+        except requests.exceptions.RequestException as e:
+            return Response({"error": "Something went wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class GetSubmissionView(APIView):
+    def get(self, request):
+        headers = {
+            "X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah",
+            "Accept": "application/json",
+        }
+        url = "https://api.docuseal.co/"
+        try:
+            response = requests.get(url + "submissions", headers=headers)
+            dic = response.json()
+            data = dic.get("data", [])
+            return Response(data)
+        except requests.exceptions.RequestException as e:
+            return Response({"error": "Something went wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class TelechargeView(APIView):
+    def get(self, request, id):
+        url = f"https://api.docuseal.co/submitters/{id}"
+        headers = {"X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah"}
+        try:
+            response = requests.get(url, headers=headers)
+            return Response(response.json().get("documents")[0])
+        except requests.exceptions.RequestException as e:
+            return Response({"error": "Erreur lors de la récupération des données"},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
