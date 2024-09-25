@@ -24,11 +24,12 @@
     ],
     "etat": 1,
     "displayEtat": "SOUMIS",
-    "authorRow": "Absa Diop",
+    "authorRow": "Pape Waly Diouf",
     "diplomaRow": "CAP",
     "statusRow": "SOUMIS",
     "submissionDateRow": "2024-09-23",
-    "authorEmail": "Absa@simmmple.com",
+    "authorEmail": "papewalydiouf@firndebi.com",
+    "authorImg": "elegant-businessman.jpg",
     "viewText": "Details"
   },
   {
@@ -60,7 +61,8 @@
     "diplomaRow": "BEP",
     "statusRow": "SOUMIS",
     "submissionDateRow": "2024-09-23",
-    "authorEmail": "Absa@simmmple.com",
+    "authorEmail": "absadiop@firndebi.com",
+    "authorImg": "woman.jpg",
     "viewText": "Details"
   },
   {
@@ -88,11 +90,12 @@
     ],
     "etat": 1,
     "displayEtat": "SOUMIS",
-    "authorRow": "Absa Diop",
+    "authorRow": "Seydi Mansour Faye",
     "diplomaRow": "CAP",
     "statusRow": "SOUMIS",
     "submissionDateRow": "2024-09-23",
-    "authorEmail": "Absa@simmmple.com",
+    "authorEmail": "seydimansourfaye@firndebi.com",
+    "authorImg": "man.jpg",
     "viewText": "Details"
   },
   {
@@ -120,11 +123,12 @@
     ],
     "etat": 1,
     "displayEtat": "SOUMIS",
-    "authorRow": "Absa Diop",
+    "authorRow": "Mme camarra",
     "diplomaRow": "BEP",
     "statusRow": "SOUMIS",
     "submissionDateRow": "2024-09-23",
-    "authorEmail": "Absa@simmmple.com",
+    "authorEmail": "camarra@firndebi.com",
+    "authorImg": "businesswoman.jpg",
     "viewText": "Details"
   },
   {
@@ -152,11 +156,12 @@
     ],
     "etat": 1,
     "displayEtat": "SOUMIS",
-    "authorRow": "Absa Diop",
+    "authorRow": "Mr dia",
     "diplomaRow": "BEP",
     "statusRow": "SOUMIS",
     "submissionDateRow": "2024-09-24",
-    "authorEmail": "Absa@simmmple.com",
+    "authorEmail": "dia@firndebi.com",
+    "authorImg": "dia.jpg",
     "viewText": "Details"
   },
   {
@@ -184,11 +189,12 @@
     ],
     "etat": 1,
     "displayEtat": "SOUMIS",
-    "authorRow": "Absa Diop",
+    "authorRow": "Babacar Dieng",
+    "authorEmail": "babacardieng@firndebi.com",
+    "authorImg": "businessman.jpg",
     "diplomaRow": "BTS",
     "statusRow": "SOUMIS",
     "submissionDateRow": "2024-09-24",
-    "authorEmail": "Absa@simmmple.com",
     "viewText": "Details"
   }
 ]
