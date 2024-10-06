@@ -32,6 +32,7 @@ class DiplomeUserSerializer(CreateUserSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
+            phone_number = validated_data['phone_number'],
             role=Account.Role.DIPLOME
         )
         user.save()
