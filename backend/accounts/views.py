@@ -34,7 +34,7 @@ class InstitutionUserList(generics.ListCreateAPIView):
 class AdminUserList(generics.ListCreateAPIView):
 
     queryset = Admin.objects.all()
-    serializer_class = DiplomeUserSerializer
+    serializer_class = AdminUserSerializer
 
     def list(self, request):
         queryset = self.get_queryset()
