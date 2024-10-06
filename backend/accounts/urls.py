@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import AdminUserList, DiplomeUserList, InstitutionUserList, UsersList
+
+from .models import Employe
+from .views import AdminUserList, DiplomeUserList, InstitutionUserList, UsersList, EmployeUserList
 
 urlpatterns = [
 
@@ -14,6 +16,8 @@ urlpatterns = [
     # url pour voir les utilisateurs administrateurs avec une method get,
     # et créer un utilisateur avec le role d'institution une methode post.
     path('institutions/', InstitutionUserList.as_view(), name='institution-user-list'),
+
+    path('employes/', EmployeUserList.as_view(), name='employer-user-list'),
 
     # url pour voir tous les utilisateurs
     path('', UsersList.as_view(), name='user-list'),

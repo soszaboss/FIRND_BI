@@ -38,6 +38,7 @@ class Account(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         ADMIN = "ADMIN", "Admin"
         DIPLOME = "DIPLOME", "Diplomé"
         INSTITUTION = "INSTITUTION", "Institution"
+        EMPLOYE = "EMPLOYE", "Employé"
 
     username = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
@@ -103,6 +104,17 @@ class AdminManager(models.Manager):
 class Admin(Account):
     """Modèle proxy pour les utilisateurs ayant le rôle 'Admin'."""
     objects = AdminManager()
+
+    class Meta:
+        proxy = True
+
+class EmployeManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role=Account.Role.ADMIN)
+
+class Employe(Account):
+    """Modèle proxy pour les utilisateurs ayant le rôle 'Admin'."""
+    objects = EmployeManager()
 
     class Meta:
         proxy = True
