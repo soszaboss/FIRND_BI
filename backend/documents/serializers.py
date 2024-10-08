@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Diploma, DemandeSoumission, Etudiant
+from drf_spectacular.utils import extend_schema_field
 
 
 class FileSerializer(serializers.ModelSerializer):
@@ -13,6 +14,11 @@ class EtudiantSerializer(serializers.ModelSerializer):
 
 class DiplomaSerializer(serializers.ModelSerializer):
     etudiant = EtudiantSerializer(read_only=True)  # Afficher les informations des étudiants en lecture seule
+    
+    @extend_schema_field(serializers.CharField())
+    def get_full_name(self, obj):
+        # Votre logique pour obtenir le nom complet
+        return f"{obj.etudiant.first_name} {obj.etudiant.last_name}"
 
     class Meta:
         model = Diploma

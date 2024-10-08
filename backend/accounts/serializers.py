@@ -44,6 +44,8 @@ class InstitutionUserSerializer(CreateUserSerializer):
     def create(self, validated_data):
         user = Account.objects.create_user(
             email=validated_data['email'],
+            phone_number = validated_data['phone_number'],
+            username=validated_data['username'],
             password=validated_data['password'],
             role=Account.Role.INSTITUTION
         )
@@ -57,6 +59,8 @@ class AdminUserSerializer(CreateUserSerializer):
         user = Account.objects.create_user(
             email=validated_data['email'],
             password=validated_data['password'],
+            phone_number = validated_data['phone_number'],
+            username=validated_data['username'],
             role=Account.Role.ADMIN
         )
         user.save()

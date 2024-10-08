@@ -1,3 +1,4 @@
+from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework import status
 from accounts.models import Account
@@ -10,35 +11,63 @@ from django.utils import timezone
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from .serializers import VerifyOTPSerializer, LoginSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import MyTokenObtainPairSerializer
+from django.contrib.auth import get_user_model
+from .backends import CustomAuthBackend  # Import your custom backend
 
+class LoginViewViaMail(GenericAPIView):
+    """Vue pour gérer l'authentification avec OTP via email."""
+    serializer_class = LoginSerializer
 
-class LoginViewViaMail(APIView):
-
-    """Vue pour gérer l'authentification avec OTP."""
-
+    @swagger_auto_schema(
+        operation_description="Login with email and password to receive an OTP via email",
+        responses={
+            200: openapi.Response(
+                description="OTP généré avec succès",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'message': openapi.Schema(type=openapi.TYPE_STRING, description='Success message')
+                    }
+                )
+            ),
+            400: openapi.Response(
+                description="Bad Request",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, description='Error message')
+                    }
+                )
+            )
+        }
+    )
     def post(self, request, *args, **kwargs):
-        email = request.data.get('email')
-        password = request.data.get('password')
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
 
         if not email or not password:
-            return Response("L'email et le mot de passe sont requis.", status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "L'email et le mot de passe sont requis."}, status=status.HTTP_400_BAD_REQUEST)
 
         user = authenticate(email=email, password=password)
         if user is None:
-            return Response("Identifiants invalides.", status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Identifiants invalides."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Vérification du nombre maximum de tentatives d'OTP
         if user.max_otp_try <= 0 and user.otp_max_out and timezone.now() < user.otp_max_out:
-            return Response("Nombre maximum de tentatives OTP atteint, réessayez dans une heure", status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Nombre maximum de tentatives OTP atteint, réessayez dans une heure"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Génération de l'OTP et mise à jour des champs de l'utilisateur
         otp = randint(1000, 9999)
         otp_expiry = timezone.now() + timedelta(minutes=10)
         user.otp = otp
         user.otp_expiry = otp_expiry
         user.max_otp_try -= 1
 
-        # Réinitialisation des tentatives d'OTP
         if user.max_otp_try == 0:
             user.otp_max_out = timezone.now() + timedelta(hours=1)
         elif user.max_otp_try < 0:
@@ -47,34 +76,57 @@ class LoginViewViaMail(APIView):
 
         user.save()
         send_otp_via_mail(otp, user.email)
-        return Response({"message":"OTP généré avec succès, veuillez vérifier votre adresse email"}, status=status.HTTP_200_OK)
+        return Response({"message": "OTP généré avec succès, veuillez vérifier votre adresse email"}, status=status.HTTP_200_OK)
 
-class LoginViewViaSms(APIView):
-    """Vue pour gérer l'authentification avec OTP."""
+class LoginViewViaSms(GenericAPIView):
+    """Vue pour gérer l'authentification avec OTP via SMS."""
+    serializer_class = LoginSerializer
 
+    @swagger_auto_schema(
+        operation_description="Login with email and password to receive an OTP via SMS",
+        responses={
+            200: openapi.Response(
+                description="OTP généré avec succès",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'message': openapi.Schema(type=openapi.TYPE_STRING, description='Success message')
+                    }
+                )
+            ),
+            400: openapi.Response(
+                description="Bad Request",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, description='Error message')
+                    }
+                )
+            )
+        }
+    )
     def post(self, request, *args, **kwargs):
-        email = request.data.get('email')
-        password = request.data.get('password')
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+        password = serializer.validated_data['password']
 
         if not email or not password:
-            return Response("L'email et le mot de passe sont requis.", status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "L'email et le mot de passe sont requis."}, status=status.HTTP_400_BAD_REQUEST)
 
         user = authenticate(email=email, password=password)
         if user is None:
-            return Response("Identifiants invalides.", status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Identifiants invalides."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Vérification du nombre maximum de tentatives d'OTP
         if user.max_otp_try <= 0 and user.otp_max_out and timezone.now() < user.otp_max_out:
-            return Response("Nombre maximum de tentatives OTP atteint, réessayez dans une heure", status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Nombre maximum de tentatives OTP atteint, réessayez dans une heure"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Génération de l'OTP et mise à jour des champs de l'utilisateur
         otp = randint(1000, 9999)
         otp_expiry = timezone.now() + timedelta(minutes=10)
         user.otp = otp
         user.otp_expiry = otp_expiry
         user.max_otp_try -= 1
 
-        # Réinitialisation des tentatives d'OTP
         if user.max_otp_try == 0:
             user.otp_max_out = timezone.now() + timedelta(hours=1)
         elif user.max_otp_try < 0:
@@ -83,40 +135,60 @@ class LoginViewViaSms(APIView):
 
         user.save()
         send_opt_via_sms(otp, user.phone_number)
-        return Response({"message":"OTP généré avec succès, veuillez vérifier votre adresse email"}, status=status.HTTP_200_OK)
+        return Response({"message": "OTP généré avec succès, veuillez vérifier votre téléphone"}, status=status.HTTP_200_OK)
 
-class VerifyOTPView(APIView):
+class VerifyOTPView(GenericAPIView):
     """Vue pour vérifier le code OTP."""
+    serializer_class = VerifyOTPSerializer
 
+    @swagger_auto_schema(
+        operation_description="Verify the OTP code",
+        responses={
+            200: openapi.Response(
+                description="OTP vérifié avec succès",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'refresh': openapi.Schema(type=openapi.TYPE_STRING, description='JWT refresh token'),
+                        'access': openapi.Schema(type=openapi.TYPE_STRING, description='JWT access token'),
+                    }
+                )
+            ),
+            400: openapi.Response(
+                description="Bad Request",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'error': openapi.Schema(type=openapi.TYPE_STRING, description='Error message')
+                    }
+                )
+            )
+        }
+    )
     def post(self, request, *args, **kwargs):
-        otp = int(request.data.get('otp'))
-        print(otp)
-        print(type(otp))
-        if not otp:
-            return Response("Veuillez entrer un OTP.", status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        otp = serializer.validated_data['otp']
+        email = serializer.validated_data['email']
 
-
+        User = get_user_model()
         try:
-            user = Account.objects.get(otp=otp)
-            print(f"user: {user}")
-        except Account.DoesNotExist:
-            return Response("Identifiants invalides.", status=status.HTTP_400_BAD_REQUEST)
+            user = User.objects.get(email=email, otp=otp)
+        except User.DoesNotExist:
+            return Response({"error": "Identifiants invalides."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Vérification de l'expiration de l'OTP
-        if user.otp_expiry and timezone.now() > user.otp_expiry:
-            return Response("Le code OTP a expiré. Veuillez en demander un nouveau.", status=status.HTTP_400_BAD_REQUEST)
-
-        # Connexion de l'utilisateur après vérification OTP
+        # Specify the backend when logging in
         login(request, user)
 
-        # Réinitialisation des champs liés à l'OTP
         user.otp = None
         user.otp_expiry = None
         user.max_otp_try = 3
         user.otp_max_out = None
         user.save()
 
-        # Génération des tokens JWT
-        refresh = RefreshToken.for_user(user)
         return Response(get_tokens_for_user(user), status=status.HTTP_200_OK)
 
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
