@@ -1,23 +1,21 @@
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import (
-    DiplomaSerializer, DemandeSoumissionSerializer, DemandeSoumissionStatusSerializer,
-    EtudiantSerializer, FileSerializer
-)
+from .serializers import DiplomaSerializer, DemandeSoumissionSerializer, DemandeSoumissionStatusSerializer, \
+    EtudiantSerializer
 from rest_framework import generics
 from .models import Diploma, DemandeSoumission, DemandeSoumissionStatus, Etudiant, TypeDiplome
 from django.http import FileResponse, HttpResponse
 import os
+from .serializers import FileSerializer
 from .utils.download_and_watermark_document import download_pdf_file, download_and_save_document
 from .utils.signature import hasher_pdf, generer_paire_de_cles, signer_hash
 from .utils.verification import verifier_signature
 from rest_framework.views import APIView
 import json
+from rest_framework.views import APIView
 import requests
-from rest_framework.generics import GenericAPIView
-from rest_framework import serializers
 
 def return_pfd_file(filepath: str):
     try:
@@ -50,25 +48,18 @@ class EtudiantsViewSet(viewsets.ModelViewSet):
     queryset = Etudiant.objects.all()
     serializer_class = EtudiantSerializer
 
-@extend_schema(
-    responses={200: FileSerializer}
-)
 @api_view(['GET'])
 def file_watermarked(request, url):
     filepath = download_pdf_file(url)
     if filepath:
         return return_pfd_file(filepath)
     else:
-        return Response({"error": "Échec du téléchargement et du filigrane du PDF."},
-                        status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Échec du téléchargement et du filigrane du PDF."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 chemin_signature = "./documents/utils/signature et cle publique/signature.bin"
 chemin_cle_publique = "./documents/utils/signature et cle publique/cle_publique.pem"
 
-@extend_schema(
-    responses={200: FileSerializer}
-)
 @api_view(['POST'])
 def signer_pdf(request, url):
     try:
@@ -111,9 +102,6 @@ def signer_pdf(request, url):
         return HttpResponse(f"Erreur lors de la signature du PDF: {str(e)}", status=500)
 
 
-@extend_schema(
-    responses={200: FileSerializer}
-)
 @api_view(['GET'])
 def telecharger_cle_publique(request):
     file_path = chemin_cle_publique
@@ -122,10 +110,6 @@ def telecharger_cle_publique(request):
     return Response({"erreur": "Fichier non trouvé"}, status=status.HTTP_404_NOT_FOUND)
 
 
-@extend_schema(
-    request=FileSerializer,
-    responses={200: FileSerializer}
-)
 @api_view(['POST'])
 def verifier_pdf(request):
     try:
@@ -142,6 +126,7 @@ def verifier_pdf(request):
         with open(filepath, 'wb') as pdf_file:
             for chunk in fichier_pdf.chunks():
                 pdf_file.write(chunk)
+
 
         signature = open(chemin_signature, 'rb').read()
         cle_publique = open(chemin_cle_publique, 'rb').read()
@@ -179,9 +164,6 @@ class DemandeSoumissionDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = DemandeSoumission.objects.all()
     serializer_class = DemandeSoumissionSerializer
 
-@extend_schema(
-    responses={200: DemandeSoumissionStatusSerializer(many=True)}
-)
 @api_view(['GET'])
 def demande_soumission_status(request):
     status_choices = DemandeSoumissionStatus.choices
@@ -190,9 +172,6 @@ def demande_soumission_status(request):
 
     return Response(data, status=status.HTTP_200_OK)
 
-@extend_schema(
-    responses={200: DemandeSoumissionStatusSerializer(many=True)}
-)
 @api_view(['GET'])
 def type_diplome_status(request):
     status_choices = TypeDiplome.choices
@@ -201,17 +180,7 @@ def type_diplome_status(request):
 
     return Response(data, status=status.HTTP_200_OK)
 
-@extend_schema_view(
-    post=extend_schema(
-        request=FileSerializer,
-        responses={201: FileSerializer}
-    ),
-    get=extend_schema(
-        responses={200: FileSerializer(many=True)}
-    )
-)
 class SauvegardeJSON(APIView):
-    serializer_class = FileSerializer
     def post(self, request):
         data = request.data
         try:
@@ -248,82 +217,79 @@ class SauvegardeJSON(APIView):
             return Response(f"Erreur lors de la lecture des données : {str(e)}",
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-class CreatePDFView(GenericAPIView):
-    serializer_class = DiplomaSerializer
-    
+class CreatePDFView(APIView):
     def post(self, request):
-        # Votre logique ici
-        pass
-
-class DemandeSoumissionStatusView(GenericAPIView):
-    serializer_class = DemandeSoumissionStatusSerializer
-
+        headers = {
+            "X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+        url = "https://api.docuseal.co/"
+        try:
+            print(request.data)
+            response = requests.post(url + "templates/pdf", json=request.data, headers=headers)
+            data = response.json()
+            tem_id = data.get("id")
+            sub_email = data.get("author", {}).get("email")
+            sub_uuid = data.get("submitters", [])[0].get("uuid")
+            payload = {
+                "template_id": tem_id,
+                "submitters": [
+                    {"role": "First Party", "email": sub_email, "uuid": sub_uuid}
+                ],
+                "status": "opened",
+            }
+            response = requests.post(url + "submissions", json=payload, headers=headers)
+            donn = response.json()[0]
+            return Response(donn.get("id"))
+        except requests.exceptions.RequestException as e:
+            return Response({"error": "Erreur de soumission"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class GetPDFView(APIView):
     def get(self, request):
-        status_choices = DemandeSoumissionStatus.choices
-        data = [{'key': key, 'label': label} for key, label in status_choices]
-        return Response(data, status=status.HTTP_200_OK)
-
-class FileWatermarkedView(GenericAPIView):
-    serializer_class = FileSerializer
-    
-    def get(self, request, url):
-        filepath = download_pdf_file(url)
-        if filepath:
-            return return_pfd_file(filepath)
-        else:
-            return Response({"error": "Échec du téléchargement et du filigrane du PDF."},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-class TelechargerClePubliqueView(GenericAPIView):
-    serializer_class = serializers.Serializer  # Utilisez un sérialiseur vide si vous n'avez pas besoin de validation
-
+        headers = {
+            "X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah",
+            "Accept": "application/json",
+        }
+        url = "https://api.docuseal.co/"
+        try:
+            response = requests.get(url + "templates", headers=headers)
+            dic = response.json()
+            data = dic.get("data", [])
+            tem_id = data[0].get("id")
+            sub_email = data[0].get("author", {}).get("email")
+            sub_uuid = data[0].get("submitters", [])[0].get("uuid")
+            payload = {
+                "template_id": tem_id,
+                "send_email": False,
+                "submitters": [
+                    {"role": "First Party", "email": sub_email, "uuid": sub_uuid}
+                ],
+                "status": "opening",
+            }
+            return Response({"temp": data})
+        except requests.exceptions.RequestException as e:
+            return Response({"error": "Something went wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class GetSubmissionView(APIView):
     def get(self, request):
-        file_path = chemin_cle_publique
-        if os.path.exists(file_path):
-            return FileResponse(open(file_path, 'rb'), as_attachment=True)
-        return Response({"erreur": "Fichier non trouvé"}, status=status.HTTP_404_NOT_FOUND)
-
-class GetPDFView(GenericAPIView):
-    serializer_class = DiplomaSerializer
-    
-    def get(self, request):
-        # Votre logique ici
-        pass
-
-class GetSubmissionView(GenericAPIView):
-    serializer_class = DemandeSoumissionSerializer
-    
-    def get(self, request):
-        # Votre logique ici
-        pass
-
-class SignerPDFView(GenericAPIView):
-    serializer_class = FileSerializer
-    
-    def post(self, request, url):
-        # Votre logique ici (le contenu de la fonction signer_pdf)
-        pass
-
-class TelechargeView(GenericAPIView):
-    serializer_class = FileSerializer
-    
+        headers = {
+            "X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah",
+            "Accept": "application/json",
+        }
+        url = "https://api.docuseal.co/"
+        try:
+            response = requests.get(url + "submissions", headers=headers)
+            dic = response.json()
+            data = dic.get("data", [])
+            return Response(data)
+        except requests.exceptions.RequestException as e:
+            return Response({"error": "Something went wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class TelechargeView(APIView):
     def get(self, request, id):
-        # Votre logique ici
-        pass
-
-class TypeDiplomeStatusView(GenericAPIView):
-    serializer_class = DemandeSoumissionStatusSerializer
-
-    def get(self, request):
-        status_choices = TypeDiplome.choices
-        data = [{'key': key, 'label': label} for key, label in status_choices]
-        return Response(data, status=status.HTTP_200_OK)
-
-class VerifierPDFView(GenericAPIView):
-    serializer_class = FileSerializer
-    
-    def post(self, request):
-        # Votre logique ici (le contenu de la fonction verifier_pdf)
-        pass
-
-# Remplacez les fonctions décorées par @api_view par ces nouvelles classes
+        url = f"https://api.docuseal.co/submitters/{id}"
+        headers = {"X-Auth-Token": "3K8io79Rz7ejoPAqumzJUJFYVBBioDvA5YzUCGEWGah"}
+        try:
+            response = requests.get(url, headers=headers)
+            return Response(response.json().get("documents")[0])
+        except requests.exceptions.RequestException as e:
+            return Response({"error": "Erreur lors de la récupération des données"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)

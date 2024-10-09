@@ -33,8 +33,6 @@ class TypeDiplome(models.IntegerChoices):
     BTS = 1, 'BTS'
     CAP = 2, 'CAP'
     BEP = 3, 'BEP'
-    BT = 4, 'BT'
-
 
 
 class Diploma(TimeStampedModel, Model):
